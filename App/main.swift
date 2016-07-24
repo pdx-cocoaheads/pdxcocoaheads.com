@@ -67,7 +67,7 @@ let _ = drop.config["app", "key"].string ?? ""
     --workDir to the application upon execution.
 */
 drop.get("/") { request in
-    return try drop.view("welcome.html")
+    return try drop.view("index.html")
 }
 
 /**
