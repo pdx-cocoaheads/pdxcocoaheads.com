@@ -53,8 +53,9 @@ let drop = Droplet(workDir: workDir, providers: [mustache])
     current server environment.
 
     Read the docs to learn more
-*/
+
 let _ = drop.config["app", "key"].string ?? ""
+*/
 
 /**
     This first route will return the welcome.html
@@ -82,7 +83,7 @@ drop.get("/") { request in
     By conforming to JsonRepresentable, you can pass
     the data structure into any JSON data as if it
     were a native JSON data type.
-*/
+
 drop.get("json") { request in
     return JSON([
         "number": 123,
@@ -96,6 +97,7 @@ drop.get("json") { request in
         ])
     ])
 }
+*/
 
 /**
     This route shows how to access request
@@ -118,13 +120,14 @@ drop.get("json") { request in
     - JSON: request.data.json
     - Form URL-Encoded: request.data.formEncoded
     - MultiPart: request.data.multipart
-*/
+
 drop.get("data", Int.self) { request, int in
     return JSON([
         "int": int,
         "name": request.data["name"].string ?? "no name"
     ])
 }
+*/
 
 /**
     Here's an example of using type-safe routing to ensure 
@@ -135,10 +138,11 @@ drop.get("data", Int.self) { request, int in
     work with type-safe routing, make it StringInitializable.
 
     The User model included in this example is StringInitializable.
-*/
+
 drop.get("posts", Int.self) { request, postId in
     return "Requesting post with ID \(postId)"
 }
+*/
 
 /**
     This will set up the appropriate GET, PUT, and POST
@@ -148,84 +152,29 @@ drop.get("posts", Int.self) { request, postId in
     Controllers are also type-safe, with their types being
     defined by which StringInitializable class they choose
     to receive as parameters to their functions.
-*/
 
 let users = UserController(droplet: drop)
 drop.resource("users", users)
+*/
 
 /**
     VaporMustache hooks into Vapor's view class to
     allow rendering of Mustache templates. You can
     even reference included files setup through the provider.
-*/
+
 drop.get("mustache") { request in
     return try drop.view("template.mustache", context: [
         "greeting": "Hello, world!"
     ])
 }
-
-/**
-    A custom validator definining what
-    constitutes a valid name. Here it is 
-    defined as an alphanumeric string that
-    is between 5 and 20 characters.
 */
-class Name: ValidationSuite {
-    static func validate(input value: String) throws {
-        let evaluation = OnlyAlphanumeric.self
-            && Count.min(5)
-            && Count.max(20)
-
-        try evaluation.validate(input: value)
-    }
-}
-
-/**
-    By using `Valid<>` properties, the
-    employee class ensures only valid
-    data will be stored.
-*/
-class Employee {
-    var email: Valid<Email>
-    var name: Valid<Name>
-
-    init(request: Request) throws {
-        email = try request.data["email"].validated()
-        name = try request.data["name"].validated()
-    }
-}
-
-/**
-    Allows any instance of employee
-    to be returned as Json
-*/
-extension Employee: JSONRepresentable {
-    func makeJSON() -> JSON {
-        return JSON([
-            "email": email.value,
-            "name": name.value
-        ])
-    }
-}
-
-drop.any("validation") { request in
-    return try Employee(request: request)
-}
-
-/**
-    This simple plaintext response is useful
-    when benchmarking Vapor.
-*/
-drop.get("plaintext") { request in
-    return "Hello, World!"
-}
 
 /**
     Vapor automatically handles setting
     and retreiving sessions. Simply add data to
     the session variable and–if the user has cookies
     enabled–the data will persist with each request.
-*/
+
 drop.get("session") { request in
     let json = JSON([
         "session.data": "\(request.session)",
@@ -239,6 +188,7 @@ drop.get("session") { request in
 
     return response
 }
+*/
 
 /**
     Add Localization to your app by creating
@@ -252,13 +202,14 @@ drop.get("session") { request in
 
     The first parameter to `app.localization` is
     the language code.
-*/
+
 drop.get("localization", String.self) { request, lang in
     return JSON([
         "title": drop.localization[lang, "welcome", "title"],
         "body": drop.localization[lang, "welcome", "body"]
     ])
 }
+*/
 
 /**
     Middleware is a great place to filter 
@@ -270,8 +221,9 @@ drop.get("localization", String.self) { request, lang in
     calling the routes inside of `app.middleware(MiddlewareType) { 
         app.get() { ... }
     }`
-*/
+
 drop.globalMiddleware.append(SampleMiddleware())
+*/
 
 let port = drop.config["app", "port"].int ?? 80
 
