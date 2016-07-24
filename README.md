@@ -4,7 +4,7 @@ This is the source code behind [pdxcocoaheads.com](http://pdxcocoaheads.com).
 
 # Contributing
 
-If you'd like to add features, fix typos on the site or implement one of our [issues](https://github.com/pdx-cocoaheads/pdxcocoaheads.com/issues); Pull requests are welcome! Read on for how to get the project set up to build locally and the general process for submitting a Pull Request.
+If you'd like to add features, fix typos on the site or implement one of our [issues](https://github.com/pdx-cocoaheads/pdxcocoaheads.com/issues); Pull requests are welcome! Read on for how to get the project set up to build locally.
 
 ## Building the app
 
