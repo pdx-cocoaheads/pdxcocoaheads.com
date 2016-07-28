@@ -579,6 +579,10 @@ nav ul li {
   margin: 0;
 }
 
+nav ul li a.active {
+    font-weight: bold;
+}
+
 nav ul li:after {
   content: '/';
   display: block;
@@ -588,4 +592,26 @@ nav ul li:after {
 
 nav ul li:last-child:after {
   display: none;
+}
+
+ul.data-grid {
+    border-radius: .5em;
+    margin-top: 1em;
+    padding: 1em 0;
+    border: solid #cccccc 1px;
+}
+
+ul.data-grid li {
+    list-style: none;
+    line-height: 1em;
+    padding: .75em 0 .25em .5em;
+    border-bottom: solid #cccccc .01em;
+}
+
+ul.data-grid li:nth-child(2n + 1) {
+    background-color: #eeeeee;
+}
+
+ul.data-grid li:first-child {
+    border-top: solid #cccccc .01em;
 }

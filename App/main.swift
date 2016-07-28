@@ -71,6 +71,17 @@ drop.get("/") { request in
     return try drop.view("index.html")
 }
 
+// let topics = [{"name": "resque"},{"name": "hub"},{"name": "rip"}]
+
+
+
+drop.get("/topics") { request in
+    return try drop.view("topics.mustache", context:
+        [
+            "topics": "Stuff"
+        ]
+        )  
+}
 /**
     Return JSON requests easy by wrapping
     any JSON data type (String, Int, Dict, etc)
