@@ -1,6 +1,8 @@
 import Vapor
 import VaporMustache
-
+import Engine
+import SocksCore
+import Mustache
 
 /**
     Adding a provider allows it to boot
@@ -69,6 +71,46 @@ let _ = drop.config["app", "key"].string ?? ""
 */
 drop.get("/") { request in
     return try drop.view("index.html")
+}
+
+drop.get("/events") { _ in
+    
+    let template = "upcoming-events.mustache"
+    
+    // Show default "no events" page if config data is missing for some reason
+    guard let eventsHost = drop.config["meetup", "hostname"].string,
+          let queryPath = drop.config["meetup", "events-queries", "all"].string
+    else {
+        
+        drop.log.warning("No config info for events query")
+        return try drop.view(template, context: [:])
+    }
+    
+    let requestURL = "https://\(eventsHost)/\(queryPath)"
+    let response = try? drop.client.get(requestURL)
+ 
+    // Special action for failed response?
+
+    // Test unpacking of response, show default "no events" on failure
+    guard let parsed = response?.json,
+          let unpacked = try? unpackMeetupEvents(fromJSON: parsed)
+    else {
+
+        drop.log.warning("Event list response from Meetup was " +
+                         "empty or nonexistent")
+        return try drop.view(template, context: [:])
+    }
+ 
+    // Set up context with successfully unpacked data
+    //!!!: Typing `context`'s values as `MustacheBox`, or allowing that to be 
+    //!!!: inferred leads to a fatal error due to a failed unsafeBitCast 
+    //!!!: in _dictionaryBridgeToObjectiveC *after returning* the built view.
+    var context: [String : Any] = ["events" : Mustache.Box(boxable: unpacked)]
+    EventsMustacheFilters.asContext.forEach { (key, filter) in
+         context[key] = filter
+    }
+    
+    return try drop.view(template, context: context)
 }
 
 /**
