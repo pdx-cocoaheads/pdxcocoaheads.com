@@ -3,7 +3,6 @@ import VaporMustache
 import Engine
 import SocksCore
 import Mustache
-
 /**
     Adding a provider allows it to boot
     and initialize itself as a dependency.
@@ -90,35 +89,37 @@ drop.get("/events") { _ in
     
     let template = "upcoming-events.mustache"
     
-    // Show default "no events" page if config data is missing for some reason
-    guard let eventsHost = drop.config["meetup", "hostname"].string,
-          let queryPath = drop.config["meetup", "events-queries", "all"].string
-    else {
+    let meetup = MeetupAPI(config: drop.config)
+
+    var events: [MeetupEvent] = []
+    do {
         
-        drop.log.warning("No config info for events query")
-        return try drop.view(template, context: [:])
+        events = try meetup.getUpcomingEvents()
     }
-    
-    let requestURL = "https://\(eventsHost)/\(queryPath)"
-    let response = try? drop.client.get(requestURL)
- 
-    // Special action for failed response?
+    catch MeetupAPI.Error.missingConfigInfo {
+        
+        drop.log.warning("Could not retrieve config info for MeetupAPI.")
+    }
+    catch MeetupAPI.Error.noResponse {
 
-    // Test unpacking of response, show default "no events" on failure
-    guard let parsed = response?.json,
-          let unpacked = try? unpackMeetupEvents(fromJSON: parsed)
-    else {
-
-        drop.log.warning("Event list response from Meetup was " +
-                         "empty or nonexistent")
-        return try drop.view(template, context: [:])
+        drop.log.warning("Request to Meetup failed or produced " +
+                         "no response.")
+    }
+    catch MeetupAPI.Error.responseInvalidJSON {
+        
+        drop.log.warning("Meetup response could not be parsed to JSON.")
+    }
+    catch MeetupAPI.Error.responseNotAnArray {
+        
+        drop.log.warning("Meetup JSON did not represent expected array.")
     }
  
     // Set up context with successfully unpacked data
     //!!!: Typing `context`'s values as `MustacheBox`, or allowing that to be
-    //!!!: inferred leads to a fatal error due to a failed unsafeBitCast
+    //!!!: inferred, leads to a fatal error due to a failed unsafeBitCast
     //!!!: in _dictionaryBridgeToObjectiveC *after returning* the built view.
-    var context: [String : Any] = ["events" : Mustache.Box(boxable: unpacked)]
+    var context: [String : Any] = ["events" : Mustache.Box(boxable: events)]
+    
     EventsMustacheFilters.asContext.forEach { (key, filter) in
          context[key] = filter
     }

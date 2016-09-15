@@ -4,9 +4,9 @@ import Mustache
 /** Namespace/vendor for FilterFunctions needed for the Events page. */
 struct EventsMustacheFilters {
     
-    /** 
+    /**
      * All filters used in the upcoming-events.mustache template, boxed and
-     * ready to be added to the Mustache rendering context. 
+     * ready to be added to the Mustache rendering context.
      */
     static var asContext: [String : MustacheBox] {
         return ["formattedDate" : Box(filter: formattedDateFilter),
@@ -18,11 +18,11 @@ struct EventsMustacheFilters {
     // be created without a timezone.
     private static let PDXStandardUTCOffset = -25200000
     
-    /** 
-     * Format the event's millisecond timestamp into a nice description, using
-     * the event's timezone information.
+    /**
+     * Format the event's millisecond timestamp into a nice description,
+     * using the event's timezone information.
      */
-    static var formattedDateFilter: FilterFunction = Filter { 
+    static var formattedDateFilter: FilterFunction = Filter {
         
         (time: Int?, info: RenderingInfo) in
 
@@ -47,7 +47,7 @@ struct EventsMustacheFilters {
     /** Change the inner text of the RSVP description based on the count. */
     // This snazzy idea cribbed straight out of the Mustache docs.
     // See Mustache/Rendering/CoreFunctions.swift#L310
-    static var pluralizedRSVPFilter: FilterFunction = Filter { 
+    static var pluralizedRSVPFilter: FilterFunction = Filter {
         
         (count: Int?, info: RenderingInfo) in
         
