@@ -1,6 +1,8 @@
 import Vapor
 import VaporMustache
-
+import Engine
+import SocksCore
+import Mustache
 
 /**
     Adding a provider allows it to boot
@@ -15,7 +17,7 @@ let mustache = VaporMustache.Provider(withIncludes: [
 
 /**
     Xcode defaults to a working directory in
-    a temporary build folder. 
+    a temporary build folder.
     
     In order for Vapor to access Resources and
     Configuration files, the working directory
@@ -62,7 +64,7 @@ let _ = drop.config["app", "key"].string ?? ""
     view to any request to the root directory of the website.
 
     Views referenced with `app.view` are by default assumed
-    to live in <workDir>/Resources/Views/ 
+    to live in <workDir>/Resources/Views/
 
     You can override the working directory by passing
     --workDir to the application upon execution.
@@ -80,14 +82,56 @@ drop.get("/topics") { request in
         [
             "topics": "Stuff"
         ]
-        )  
+        )
 }
+
+
+drop.get("/events") { _ in
+    
+    let template = "upcoming-events.mustache"
+    
+    // Show default "no events" page if config data is missing for some reason
+    guard let eventsHost = drop.config["meetup", "hostname"].string,
+          let queryPath = drop.config["meetup", "events-queries", "all"].string
+    else {
+        
+        drop.log.warning("No config info for events query")
+        return try drop.view(template, context: [:])
+    }
+    
+    let requestURL = "https://\(eventsHost)/\(queryPath)"
+    let response = try? drop.client.get(requestURL)
+ 
+    // Special action for failed response?
+
+    // Test unpacking of response, show default "no events" on failure
+    guard let parsed = response?.json,
+          let unpacked = try? unpackMeetupEvents(fromJSON: parsed)
+    else {
+
+        drop.log.warning("Event list response from Meetup was " +
+                         "empty or nonexistent")
+        return try drop.view(template, context: [:])
+    }
+ 
+    // Set up context with successfully unpacked data
+    //!!!: Typing `context`'s values as `MustacheBox`, or allowing that to be
+    //!!!: inferred leads to a fatal error due to a failed unsafeBitCast
+    //!!!: in _dictionaryBridgeToObjectiveC *after returning* the built view.
+    var context: [String : Any] = ["events" : Mustache.Box(boxable: unpacked)]
+    EventsMustacheFilters.asContext.forEach { (key, filter) in
+         context[key] = filter
+    }
+    
+    return try drop.view(template, context: context)
+}
+
 /**
     Return JSON requests easy by wrapping
     any JSON data type (String, Int, Dict, etc)
     in JSON() and returning it.
 
-    Types can be made convertible to JSON by 
+    Types can be made convertible to JSON by
     conforming to JsonRepresentable. The User
     model included in this example demonstrates this.
 
@@ -141,7 +185,7 @@ drop.get("data", Int.self) { request, int in
 */
 
 /**
-    Here's an example of using type-safe routing to ensure 
+    Here's an example of using type-safe routing to ensure
     only requests to "posts/<some-integer>" will be handled.
 
     String is the most general and will match any request
@@ -223,13 +267,13 @@ drop.get("localization", String.self) { request, lang in
 */
 
 /**
-    Middleware is a great place to filter 
-    and modifying incoming requests and outgoing responses. 
+    Middleware is a great place to filter
+    and modifying incoming requests and outgoing responses.
 
     Check out the middleware in App/Middleware.
 
     You can also add middleware to a single route by
-    calling the routes inside of `app.middleware(MiddlewareType) { 
+    calling the routes inside of `app.middleware(MiddlewareType) {
         app.get() { ... }
     }`
 

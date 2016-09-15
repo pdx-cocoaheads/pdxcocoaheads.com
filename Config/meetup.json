@@ -1,0 +1,6 @@
+{
+    "hostname" : "api.meetup.com",
+    "events-queries" : {
+        "all" : "PDX-iOS-CocoaHeads/events"
+    }
+}

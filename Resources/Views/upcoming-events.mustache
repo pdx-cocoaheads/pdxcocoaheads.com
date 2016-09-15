@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{{ site.description }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDX CocoaHeads Events</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/upcoming-events.css">
+  </head>
+  <body>
+    <div class="container">
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="#">Events</a></li>
+          <li><a href="https://github.com/pdx-cocoaheads/policies/blob/master/citizen_code_of_conduct.md">Code of Conduct</a></li>
+        </ul>
+      </nav>
+      <h2>Upcoming Events</h2>
+      <hr/>
+      <div class="event-list">
+        {{#events}}
+        <p>
+          <strong class="event-title">{{name}}</strong><br/>
+          <em>Date:</em> {{formattedDate(time)}}<br/>
+          <span class="rsvp-desc" style="float: left">   
+            {{rsvpCount}} {{ pluralizedRSVP(rsvpCount) }} coming
+          </span>
+          <span class="meetup-link" style="float: right">
+            <a href="{{link}}">RSVP on Meetup.com</a>
+          </span>
+          <hr/>
+        </p>
+        {{/events}}
+        {{^events}}
+        We don't seem to have any events scheduled right now.
+        {{/events}}
+      </div>
+    </div>
+  </body>
+</html>
