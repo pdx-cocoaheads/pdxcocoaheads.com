@@ -8,11 +8,11 @@ If you'd like to add features, fix typos on the site or implement one of our [is
 
 ## Building the app
 
-The site is built using [Vapor](https://github.com/qutheory/vapor), head there for documentation on how to do things within the framework.
+The site is built using [Vapor](https://vapor.codes), check out their [documentation](http://docs.vapor.codes) to find out how to do things within the framework.
 
 ### Command Line
 
-If you have the [Vapor Toolbox](https://github.com/qutheory/vapor-toolbox) installed, run `vapor build` and `vapor run`.
+If you have the [Vapor Toolbox](https://github.com/vapor/toolbox) installed, run `vapor build` and `vapor run`. More info in the [Toolbox Documentation](https://vapor.github.io/documentation/getting-started/install-toolbox.html)
 
 Otherwise, run `swift build` to compile the application, then run `.build/debug/App`.
 
@@ -20,6 +20,6 @@ Once the app is running open a browser and head to [http://localhost:8080](http:
 
 ### Xcode 8
 
-If you want to use Xcode you'll need to create and maintain your own Xcode Project file (it is in the .gitignore). [Vapor Toolbox](https://github.com/qutheory/vapor-toolbox) has a handy command to generate one for you: `vapor xcode`. Once you've done that, you can open the project in Xcode and choose the "App" target and build/run/debug from Xcode.
+If you want to use Xcode you'll need to create and maintain your own Xcode Project file (it is in the .gitignore). [Vapor Toolbox](https://github.com/vapor/toolbox) has a handy command to generate one for you: `vapor xcode`. Once you've done that, you can open the project in Xcode and choose the "App" target and build/run/debug from Xcode.
 
 Open a browser and head to [http://localhost:8080](http://localhost:8080)!
