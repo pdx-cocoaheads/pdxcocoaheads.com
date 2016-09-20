@@ -1,0 +1,44 @@
+#extend("base")
+
+#export("head") {
+    <title>PDX Cocoaheads</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Devoted to discussion of Apple's Cocoa Framework for programming on Mac OS X and iOS devices.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/main.css">
+    <!-- HEAD HTML -->
+}
+
+#export("body") {
+    <div class="container">
+        <h1><a href="./">PDX Cocoaheads</a></h1>
+        <nav>
+            <ul>
+                <li><a href="./">Home</a></li>
+                <li>
+                    <a href="https://github.com/pdx-cocoaheads/policies/blob/master/citizen_code_of_conduct.md">Code of Conduct</a>
+                </li>
+                <li><a href="/topics" class="active">Topics</a></li>
+            </ul>
+        </nav>
+        <section>
+            <header>
+                <h2>Topics</h2>
+                <form action="mailto:ryan@example.com?cc=jeff@example.com&subject=PDX%20Cocoaheads%20Topic%Suggestion">
+                    <input type="submit" value="Suggest a Topic">
+                </form>
+            </header>
+
+            <ul class="data-grid">
+                <li>Tabs or Spaces, discuss...</li>
+                <li>Why use guard when if statements work perfectly well?</li>
+                <li>Value Types/Sliced Bread</li>
+            </ul>
+
+        </section>
+    </div>
+    <!-- scripts go here -->
+}

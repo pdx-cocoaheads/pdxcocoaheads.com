@@ -1,0 +1,30 @@
+#extend("base.leaf")
+
+#export("head") {
+    <title>PDX Cocoaheads</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Devoted to discussion of Apple's Cocoa Framework for programming on Mac OS X and iOS devices.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/main.css">
+    <!-- HEAD HTML -->
+}
+
+#export("body") {
+    <div class="container">
+        <h1><a href="./">PDX Cocoaheads</a></h1>
+        <nav>
+          <ul>
+            <li><a href="./" class="active">Home</a></li>
+            <li><a href="https://github.com/pdx-cocoaheads/policies/blob/master/citizen_code_of_conduct.md">Code of Conduct</a></li>
+            <li><a href="/topics">Topics</a></li>
+          </ul>
+        </nav>
+        <p>The Portland CocoaHeads group is devoted to discussion of Apple's Cocoa Framework for programming on Mac OS X and iOS devices. During our regularly scheduled meetings (Discussion Night) members of all experience levels have a moderated group discussion on a given topic. When we have a presenter we will have an additional meeting for the month where a presenter (a PDX-Cocoaheads member or out-of-towner) will give a presentation on their topic of choice lecture/tutorial style. Developers using any Cocoa-related language (Swift, Objective-C, Python, Ruby, javascript, etc.) are welcome.</p>
+
+        <p>Discussion Night meetings are held on the 2nd Wednesday of the month. Presentation Night meetings are held on a month-to-month basis. Head to our <a href="https://www.meetup.com/PDX-iOS-CocoaHeads/">meetup.com page</a> to sign up for notifications of new meetings and last minute updates.</p>
+    </div>
+    <!-- scripts go here -->
+}
