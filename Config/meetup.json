@@ -1,0 +1,5 @@
+{
+    "host" : "api.meetup.com",
+    "group-name" : "PDX-iOS-CocoaHeads",
+    "events-path" : "events"
+}
