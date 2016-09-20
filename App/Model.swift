@@ -30,7 +30,7 @@ enum ModelResult<Model: ModelType> {
     case error(ModelError)
 }
 
-enum ModelError: ErrorProtocol {
+enum ModelError: Error {
     case NotFound(Int)
     case DatabaseError(String)
 }
